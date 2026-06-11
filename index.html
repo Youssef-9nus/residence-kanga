@@ -24,6 +24,7 @@
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { font-weight: 400; transition: color 0.3s ease; }
         .nav-links a:hover { color: #d4af37; }
+        .nav-toggle { display: none; width: 42px; height: 42px; border: 1px solid #333; border-radius: 6px; background: #1a1a1a; color: #fff; font-size: 20px; cursor: pointer; align-items: center; justify-content: center; }
 
         /* BOUTONS */
         .btn { display: inline-block; padding: 12px 30px; border-radius: 5px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-align: center; }
@@ -61,9 +62,14 @@
         .rooms-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
         .room-card { background-color: #1a1a1a; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.3); transition: transform 0.3s ease; }
         .room-card:hover { transform: translateY(-5px); }
-        .room-img { height: 220px; overflow: hidden; }
+        .room-img { height: 220px; overflow: hidden; position: relative; }
         .room-img img { height: 100%; transition: transform 0.5s ease; }
         .room-card:hover .room-img img { transform: scale(1.1); }
+        .room-gallery-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 34px; height: 34px; border-radius: 50%; border: none; background: rgba(0,0,0,0.62); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 2; }
+        .room-gallery-btn:hover { background: rgba(212,175,55,0.95); color: #121212; }
+        .room-gallery-btn.prev { left: 10px; }
+        .room-gallery-btn.next { right: 10px; }
+        .room-gallery-count { position: absolute; right: 10px; bottom: 10px; background: rgba(0,0,0,0.65); color: #fff; border-radius: 999px; padding: 4px 10px; font-size: 12px; z-index: 2; }
         .room-info { padding: 25px; }
         .room-info h3 { font-size: 22px; margin-bottom: 10px; }
         .price { color: #d4af37; font-size: 14px; margin-bottom: 15px; }
@@ -152,6 +158,14 @@
         .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #f1c40f; }
         .form-group textarea { resize: vertical; min-height: 80px; }
         .form-group.full-width { grid-column: 1 / -1; }
+        .photo-upload-box { display: grid; grid-template-columns: 220px 1fr; gap: 16px; align-items: center; background: #1a1a1a; border: 1px dashed #444; border-radius: 8px; padding: 14px; }
+        .photo-preview { width: 220px; min-height: 140px; background: #111; border-radius: 8px; border: 1px solid #333; display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; padding: 6px; color: #777; font-size: 13px; text-align: center; }
+        .photo-preview:empty { display: flex; align-items: center; justify-content: center; }
+        .photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+        .photo-preview-thumb { aspect-ratio: 4 / 3; border-radius: 6px; overflow: hidden; background: #222; }
+        .btn-photo-upload { background: #333; color: #fff; border: 1px solid #555; padding: 11px 18px; border-radius: 6px; cursor: pointer; font-weight: 600; font-family: 'Poppins', sans-serif; display: inline-flex; align-items: center; gap: 8px; width: fit-content; }
+        .btn-photo-upload:hover { background: #444; border-color: #f1c40f; }
+        .photo-help { color: #888; font-size: 12px; margin-top: 8px; line-height: 1.5; }
         .form-actions { display: flex; gap: 10px; margin-top: 20px; grid-column: 1 / -1; }
         .btn-cancel { background: #333; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; font-family: 'Poppins', sans-serif; }
         .btn-cancel:hover { background: #444; }
@@ -180,11 +194,40 @@
 
         /* RESPONSIVE */
         @media (max-width: 768px) {
-            .navbar { padding: 20px; }
-            .nav-links { display: none; }
+            body { overflow-x: hidden; }
+            .container { padding: 0 16px; }
+            .navbar { padding: 14px 16px; }
+            .logo img { height: 42px; }
+            .nav-toggle { display: flex; }
+            .nav-links { display: none; position: absolute; top: 70px; left: 16px; right: 16px; background: #111; border: 1px solid #333; border-radius: 8px; padding: 14px; flex-direction: column; gap: 0; box-shadow: 0 12px 25px rgba(0,0,0,0.35); }
+            .nav-links.open { display: flex; }
+            .nav-links li { border-bottom: 1px solid #222; }
+            .nav-links li:last-child { border-bottom: none; }
+            .nav-links a { display: block; padding: 12px 4px; }
+            .hero-section { min-height: 92vh; height: auto; padding: 110px 16px 55px; }
+            .hero-content h3 { font-size: 18px; }
             .about-container, .contact-container, .footer-container { grid-template-columns: 1fr; gap: 30px; }
             .hero-content h1 { font-size: 40px; }
+            .hero-content p { font-size: 16px; }
+            .hero-buttons { flex-direction: column; align-items: stretch; max-width: 320px; margin: 0 auto; }
+            .btn { width: 100%; padding: 12px 18px; }
+            .rooms-section, .about-section, .services-section, .testimonials-section, .contact-section { padding: 70px 0; }
+            .section-header { margin-bottom: 35px; }
+            .section-header h2, .about-text h2, .contact-info-box h2 { font-size: 28px; }
+            .rooms-grid, .services-grid, .testimonials-grid, .admin-rooms-grid { grid-template-columns: 1fr; gap: 18px; }
+            .room-img { height: 210px; }
+            .room-info { padding: 20px; }
+            .about-features { grid-template-columns: 1fr; }
+            .admin-section { padding: 45px 0; }
+            #admin-auth-box, #form-add-room { padding: 22px; }
+            .admin-tabs { overflow-x: auto; }
+            .admin-tab { white-space: nowrap; padding: 12px 16px; }
+            .admin-rooms-header { flex-direction: column; align-items: stretch; gap: 12px; }
             .form-grid { grid-template-columns: 1fr; }
+            .photo-upload-box { grid-template-columns: 1fr; }
+            .photo-preview { width: 100%; }
+            .form-actions, .modal-actions { flex-direction: column; }
+            .modal-box { padding: 24px; }
         }
     </style>
 </head>
@@ -196,6 +239,9 @@
             <img src="logo.png" alt="logo.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
             <span class="logo-text" style="display:none;">Résidence <span style="color:#fff;">Kanga</span></span>
         </div>
+        <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Ouvrir le menu">
+            <i class="fas fa-bars"></i>
+        </button>
         <ul class="nav-links">
             <li><a href="#home">Accueil</a></li>
             <li><a href="#about">À propos</a></li>
@@ -297,11 +343,11 @@
             <h3>Nous sommes à votre écoute</h3>
             <p class="sub-contact">Préparez votre séjour avec nous</p>
             <div class="contact-links">
-                <a href="tel:+2250718392982"><i class="fas fa-phone-alt"></i> 0718392982</a>
+                <a href="tel:+2250787534966"><i class="fas fa-phone-alt"></i> 0787534966</a>
                 <a href="mailto:residencekanga@gmail.com"><i class="fas fa-envelope"></i> residencekanga@gmail.com</a>
                 <p><i class="fas fa-map-marker-alt"></i> Bingerville, nouvelle gare</p>
             </div>
-            <a href="https://wa.me/2250718392982?text=Bonjour,%20je%20souhaite%20réserver%20un%20logement" class="btn btn-whatsapp" target="_blank">
+            <a href="https://wa.me/2250787534966?text=Bonjour,%20je%20souhaite%20réserver%20un%20logement" class="btn btn-whatsapp" target="_blank">
                 <i class="fab fa-whatsapp"></i> Discuter sur WhatsApp
             </a>
         </div>
@@ -378,8 +424,17 @@
                             <input type="text" id="room-prix" class="admin-input" style="margin:0;" placeholder="Ex: 30 000">
                         </div>
                         <div class="form-group full-width">
-                            <label>URL de la photo *</label>
-                            <input type="text" id="room-photo" class="admin-input" style="margin:0;" placeholder="https://... (lien direct vers une image)">
+                            <label>Photos de la chambre *</label>
+                            <div class="photo-upload-box">
+                                <div class="photo-preview" id="room-photo-preview"></div>
+                                <div>
+                                    <input type="file" id="room-photo" accept="image/*" multiple style="display:none;">
+                                    <button type="button" id="btn-choose-photo" class="btn-photo-upload">
+                                        <i class="fas fa-images"></i> Choisir des photos
+                                    </button>
+                                    <p class="photo-help" id="room-photo-help">Sélectionne jusqu'à 6 photos depuis ta galerie ou ton ordinateur. Elles seront ajoutées automatiquement.</p>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group full-width">
                             <label>Description</label>
@@ -454,7 +509,7 @@
 // ======================================================
 const SUPABASE_URL     = "https://comlvksdjntcdrrjwtzo.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_tMQ7c_SqFT7eqzCa1r4iUg_Q6AV91Ud";
-const WHATSAPP_NUMBER  = "2250718392982";
+const WHATSAPP_NUMBER  = "2250787534966";
 const ADMIN_PASSWORD   = "Kanga2026";
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -527,6 +582,19 @@ document.addEventListener("DOMContentLoaded", () => {
 //  SCROLL HEADER
 // ======================================================
 const header = document.getElementById("main-header");
+const navToggle = document.getElementById("nav-toggle");
+const navLinks = document.querySelector(".nav-links");
+
+navToggle.addEventListener("click", () => {
+    navLinks.classList.toggle("open");
+});
+
+navLinks.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+    });
+});
+
 window.addEventListener("scroll", () => {
     header.style.backgroundColor = window.scrollY > 50 ? "#0b0b0b" : "rgba(18,18,18,0.95)";
 });
@@ -596,6 +664,50 @@ document.getElementById("btn-refresh-admin").addEventListener("click", chargerRe
 // ======================================================
 //  CHAMBRES SUPABASE — AFFICHAGE SUR LE SITE PUBLIC
 // ======================================================
+function getRoomPhotos(photoValue) {
+    const fallback = "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800";
+    if (!photoValue) return [fallback];
+
+    try {
+        const parsed = JSON.parse(photoValue);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed.filter(Boolean);
+    } catch (err) {
+        // Anciennes chambres: photo_url contient une seule image.
+    }
+
+    return [photoValue];
+}
+
+function renderRoomGallery(photos, nom, galleryId) {
+    const safePhotos = photos.length ? photos : getRoomPhotos("");
+    const buttons = safePhotos.length > 1 ? `
+        <button type="button" class="room-gallery-btn prev" onclick="changerPhotoChambre('${galleryId}', -1)"><i class="fas fa-chevron-left"></i></button>
+        <button type="button" class="room-gallery-btn next" onclick="changerPhotoChambre('${galleryId}', 1)"><i class="fas fa-chevron-right"></i></button>
+        <span class="room-gallery-count" id="${galleryId}-count">1/${safePhotos.length}</span>
+    ` : "";
+
+    return `
+        <div class="room-img room-gallery" id="${galleryId}" data-photos='${JSON.stringify(safePhotos)}' data-index="0">
+            <img src="${safePhotos[0]}" alt="${nom}">
+            ${buttons}
+        </div>`;
+}
+
+function changerPhotoChambre(galleryId, direction) {
+    const gallery = document.getElementById(galleryId);
+    if (!gallery) return;
+
+    const photos = JSON.parse(gallery.dataset.photos || "[]");
+    if (photos.length < 2) return;
+
+    const nextIndex = (Number(gallery.dataset.index || 0) + direction + photos.length) % photos.length;
+    gallery.dataset.index = nextIndex;
+    gallery.querySelector("img").src = photos[nextIndex];
+
+    const count = document.getElementById(galleryId + "-count");
+    if (count) count.textContent = `${nextIndex + 1}/${photos.length}`;
+}
+
 async function chargerChambresPubliques() {
     const grid = document.getElementById("rooms-grid");
     try {
@@ -612,11 +724,11 @@ async function chargerChambresPubliques() {
         }
         data.forEach(ch => {
             const card = document.createElement("div");
+            const photos = getRoomPhotos(ch.photo_url);
+            const galleryId = `room-gallery-${ch.id || Math.random().toString(36).slice(2)}`;
             card.className = "room-card room-card-dynamic";
             card.innerHTML = `
-                <div class="room-img">
-                    <img src="${ch.photo_url || 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800'}" alt="${ch.nom}">
-                </div>
+                ${renderRoomGallery(photos, ch.nom, galleryId)}
                 <div class="room-info">
                     <h3>${ch.nom}</h3>
                     <p class="price">à partir de <span>${ch.prix}</span> FCFA/nuit</p>
@@ -648,21 +760,23 @@ async function chargerChambresAdmin() {
             grid.innerHTML = `<p style="color:#888;grid-column:1/-1;text-align:center;padding:30px;">Aucune chambre ajoutée pour l'instant.</p>`;
             return;
         }
-        grid.innerHTML = data.map(ch => `
+        grid.innerHTML = data.map(ch => {
+            const photos = getRoomPhotos(ch.photo_url);
+            const galleryId = `admin-room-gallery-${ch.id || Math.random().toString(36).slice(2)}`;
+            return `
             <div class="admin-room-card">
-                <div class="room-img">
-                    <img src="${ch.photo_url || 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800'}" alt="${ch.nom}">
-                </div>
+                ${renderRoomGallery(photos, ch.nom, galleryId)}
                 <div class="admin-room-body">
                     <h4>${ch.nom}</h4>
                     <p class="prix">${ch.prix} FCFA/nuit</p>
                     <p class="desc">${ch.description || "—"}</p>
+                    <p class="desc">${photos.length} photo${photos.length > 1 ? "s" : ""}</p>
                     <button class="btn-delete-room" data-id="${ch.id}">
                         <i class="fas fa-trash"></i> Supprimer
                     </button>
                 </div>
             </div>
-        `).join("");
+        `}).join("");
 
         grid.querySelectorAll(".btn-delete-room").forEach(btn => {
             btn.addEventListener("click", async () => {
@@ -680,25 +794,97 @@ async function chargerChambresAdmin() {
     }
 }
 
+let selectedRoomPhotos = [];
+
+function resetPhotoSelection() {
+    selectedRoomPhotos = [];
+    document.getElementById("room-photo").value = "";
+    document.getElementById("room-photo-preview").innerHTML = "Aucune photo choisie";
+    document.getElementById("room-photo-help").textContent = "Sélectionne jusqu'à 6 photos depuis ta galerie ou ton ordinateur. Elles seront ajoutées automatiquement.";
+}
+
+function prepareRoomPhoto(file) {
+    return new Promise((resolve, reject) => {
+        if (!file || !file.type.startsWith("image/")) {
+            reject(new Error("Le fichier choisi n'est pas une image."));
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            const img = new Image();
+            img.onload = () => {
+                const maxSize = 900;
+                let { width, height } = img;
+
+                if (width > height && width > maxSize) {
+                    height = Math.round((height * maxSize) / width);
+                    width = maxSize;
+                } else if (height >= width && height > maxSize) {
+                    width = Math.round((width * maxSize) / height);
+                    height = maxSize;
+                }
+
+                const canvas = document.createElement("canvas");
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, width, height);
+                resolve(canvas.toDataURL("image/jpeg", 0.72));
+            };
+            img.onerror = () => reject(new Error("Impossible de lire cette photo."));
+            img.src = reader.result;
+        };
+        reader.onerror = () => reject(new Error("Impossible d'ouvrir cette photo."));
+        reader.readAsDataURL(file);
+    });
+}
+
+document.getElementById("btn-choose-photo").addEventListener("click", () => {
+    document.getElementById("room-photo").click();
+});
+
+document.getElementById("room-photo").addEventListener("change", async (event) => {
+    const files = Array.from(event.target.files || []).slice(0, 6);
+    if (files.length === 0) return;
+
+    const help = document.getElementById("room-photo-help");
+    help.textContent = "Préparation des photos...";
+
+    try {
+        selectedRoomPhotos = await Promise.all(files.map(file => prepareRoomPhoto(file)));
+        document.getElementById("room-photo-preview").innerHTML = selectedRoomPhotos.map((photo, index) => `
+            <div class="photo-preview-thumb"><img src="${photo}" alt="Aperçu photo ${index + 1}"></div>
+        `).join("");
+        help.textContent = `${selectedRoomPhotos.length} photo${selectedRoomPhotos.length > 1 ? "s" : ""} sélectionnée${selectedRoomPhotos.length > 1 ? "s" : ""}`;
+    } catch (err) {
+        console.error(err);
+        resetPhotoSelection();
+        alert("Une des photos ne peut pas être utilisée. Choisis d'autres images.");
+    }
+});
+
 // Afficher / cacher formulaire
 document.getElementById("btn-show-form").addEventListener("click", () => {
+    resetPhotoSelection();
     document.getElementById("form-add-room").style.display = "block";
     document.getElementById("btn-show-form").style.display = "none";
 });
 document.getElementById("btn-cancel-form").addEventListener("click", () => {
     document.getElementById("form-add-room").style.display = "none";
     document.getElementById("btn-show-form").style.display = "inline-block";
+    resetPhotoSelection();
 });
 
 // Enregistrer une chambre
 document.getElementById("btn-save-room").addEventListener("click", async () => {
     const nom   = document.getElementById("room-nom").value.trim();
     const prix  = document.getElementById("room-prix").value.trim();
-    const photo = document.getElementById("room-photo").value.trim();
+    const photo = selectedRoomPhotos.length === 1 ? selectedRoomPhotos[0] : JSON.stringify(selectedRoomPhotos);
     const desc  = document.getElementById("room-description").value.trim();
 
     if (!nom || !prix || !photo) {
-        alert("Veuillez remplir au minimum le nom, le prix et l'URL de la photo.");
+        alert("Veuillez remplir le nom, le prix et choisir au moins une photo.");
         return;
     }
 
@@ -713,8 +899,8 @@ document.getElementById("btn-save-room").addEventListener("click", async () => {
         // Réinitialiser formulaire
         document.getElementById("room-nom").value = "";
         document.getElementById("room-prix").value = "";
-        document.getElementById("room-photo").value = "";
         document.getElementById("room-description").value = "";
+        resetPhotoSelection();
         document.getElementById("form-add-room").style.display = "none";
         document.getElementById("btn-show-form").style.display = "inline-block";
 
